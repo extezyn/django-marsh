@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Интернет-магазин - Как нас найти</title>
+    <style>
+        /* Все стили из index.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .logo a {
+            color: white;
+            text-decoration: none;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            position: relative;
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 0;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: #3498db;
+        }
+        
+        .dropdown {
+            position: relative;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #34495e;
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            z-index: 1;
+            top: 100%;
+            left: 0;
+            border-radius: 0 0 4px 4px;
+        }
+        
+        .dropdown-content a {
+            color: white;
+            padding: 12px 16px;
+            display: block;
+            border-bottom: 1px solid #2c3e50;
+        }
+        
+        .dropdown-content a:last-child {
+            border-bottom: none;
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        main {
+            padding: 2rem 0;
+            flex: 1;
+        }
+        
+        .hero {
+            background-color: #3498db;
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .cart-icon {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        
+        .page-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .map {
+            margin: 2rem 0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .map img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-top: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+                flex-direction: column;
+            }
+            
+            nav ul li {
+                margin: 0.5rem 0;
+            }
+            
+            .dropdown-content {
+                position: static;
+                display: none;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">Интернет-магазин</a></div>
+                <nav>
+                    <ul>
+                        <li><a href="{% url 'main_view' %}">Главная</a></li>
+                        
+                        <li class="dropdown">
+                            <a href="{% url 'about_view' %}">О компании</a>
+                            <div class="dropdown-content">
+                                <a href="{% url 'contact_view'%}">Контакты</a>
+                                <a href="{% url 'about_view' %}">O нас</a>
+                            </div>
+                        </li>
+                        
+                        <li class="dropdown">
+                            <a href="{% url 'products_view' %}">Товары</a>
+                            <div class="dropdown-content">
+                                <a href="{% url 'categories_view' %}">Категории</a>
+                                <a href="{% url 'products_view' %}">Все товары</a>
+                            </div>
+                        </li>
+                        
+                        <li>
+                            <a href="{% url 'cart_view' %}" class="cart-icon">
+                                Корзина
+                                <span class="cart-count">0</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    
+    <main>
+        <div class="container">
+            <section class="hero">
+                <h1>Как нас найти</h1>
+                <p>Мы находимся в удобном месте</p>
+            </section>
+            
+            <div class="page-content">
+                <h2>Наше местоположение</h2>
+                <p><strong>Адрес:</strong> г. Москва, ул. Примерная, д. 123</p>
+                
+                <div class="map">
+                    <img src="https://via.placeholder.com/800x400?text=Карта+расположения" alt="Карта">
+                </div>
+                
+                <h2>Как добраться</h2>
+                <ul style="list-style: none;">
+                    <li style="margin-bottom: 0.5rem;"><strong>Метро:</strong> Станция "Примерная" (5 минут пешком)</li>
+                    <li style="margin-bottom: 0.5rem;"><strong>Автобус:</strong> № 123, 456 до остановки "Улица Примерная"</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2077 Интернет-магазин. Все права защищены.</p>
+        </div>
+    </footer>
+</body>
+</html>
