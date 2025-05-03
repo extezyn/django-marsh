@@ -1,3 +1,11 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title_name%}
+    Создание продукта
+{% endblock %}
+
+{% block content%}
 <h1>
     {% if form.instance.pk %}редактировать{% else %} добавить новую позицию {% endif %}
 </h1>
@@ -9,3 +17,4 @@
 </form>
 
 <a href="{% url 'clothes_list' %}">Вернуться к списку одежды</a>
+{% endblock %}
