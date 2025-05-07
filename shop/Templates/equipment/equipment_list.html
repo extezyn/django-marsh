@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href={% static 'css/bootstrap.css' %} />
+<div class="container mt-4">
+    <h1 class="mb-4">Спортивный инвентарь</h1>
+    {% if request.user.is_authenticated and user.is_superuser %}
+    <a href="{% url 'equipment_create' %}" class="btn btn-success mb-4">
+        <i class="fas fa-plus"></i> Добавить инвентарь
+    </a>
+    {% endif %}
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Фото</th>
+                    <th>Название</th>
+                    <th>Категория</th>
+                    <th>Цена/день</th>
+                    <th>Залог</th>
+                    <th>Доступность</th>
+                    {% if request.user.is_authenticated and user.is_superuser %}
+                    <th>Действия</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in equipment %}
+                <tr>
+                    <td>
+                        {% if item.photo %}
+                        <img src="{{ item.photo.url }}" alt="{{ item.name }}" width="80" class="img-thumbnail">
+                        {% else %}
+                        <span class="text-muted">Нет фото</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'equipment_detail' item.pk %}" class="font-weight-bold text-primary">
+                            {{ item.name }}
+                        </a>
+                    </td>
+                    <td>{{ item.category.name }}</td>
+                    <td>{{ item.price_per_day|floatformat:"2" }} ₽</td>
+                    <td>{{ item.deposit|floatformat:"2" }} ₽</td>
+                    <td>
+                        <span class="badge badge-{% if item.is_available %}success{% else %}danger{% endif %}">
+                            {% if item.is_available %}Доступен{% else %}Занят{% endif %}
+                        </span>
+                    </td>
+                    {% if request.user.is_authenticated and user.is_superuser %}
+                    <td>
+                        <a href="{% url 'equipment_update' item.pk %}" class="btn btn-sm btn-warning" title="Редактировать">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a href="{% url 'equipment_delete' item.pk %}" class="btn btn-sm btn-danger" title="Удалить">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="text-center">Нет доступного инвентаря</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

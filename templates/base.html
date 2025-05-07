@@ -1,0 +1,36 @@
+{% load static %}
+
+<!DOCTYPE HTML>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <title>
+            {% block title_name %}
+            {% endblock %}
+        </title>
+            {% block linkstyle %}
+                <link rel="stylesheet" href="{% static 'css/bootstrap.css'%}">
+            {% endblock %}
+        
+    </head>
+   
+    <body>        
+        {% block body %}
+        
+            {% block header %}
+                {% include '_inc/_header.html' %} 
+        {% endblock %}
+
+    <main>
+            {% block content %}
+            
+            {% endblock %}
+    </main>
+
+            {% block footer %}
+                {% include '_inc/_footer.html' %} 
+            {% endblock %}
+
+        {% endblock  %}
+</body>
+</html>

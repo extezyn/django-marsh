@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Интернет-магазин - Корзина</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .logo a {
+            color: white;
+            text-decoration: none;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            position: relative;
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 0;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: #3498db;
+        }
+        
+        .dropdown {
+            position: relative;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #34495e;
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            z-index: 1;
+            top: 100%;
+            left: 0;
+            border-radius: 0 0 4px 4px;
+        }
+        
+        .dropdown-content a {
+            color: white;
+            padding: 12px 16px;
+            display: block;
+            border-bottom: 1px solid #2c3e50;
+        }
+        
+        .dropdown-content a:last-child {
+            border-bottom: none;
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        main {
+            padding: 2rem 0;
+            flex: 1;
+        }
+        
+        .hero {
+            background-color: #3498db;
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .cart-icon {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        
+        .page-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        /* Стили для корзины */
+        .cart-container {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .cart-items {
+            flex: 2;
+        }
+        
+        .cart-summary {
+            flex: 1;
+            background: #f9f9f9;
+            padding: 1.5rem;
+            border-radius: 4px;
+            align-self: flex-start;
+            position: sticky;
+            top: 120px;
+        }
+        
+        .cart-item {
+            display: flex;
+            align-items: center;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid #eee;
+            gap: 1.5rem;
+        }
+        
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+        
+        .cart-item-img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+        
+        .item-details {
+            flex: 1;
+        }
+        
+        .item-details h3 {
+            margin-bottom: 0.5rem;
+        }
+        
+        .item-price {
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 0.5rem;
+        }
+        
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f5f5f5;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        .quantity-input {
+            width: 50px;
+            text-align: center;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .remove-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .remove-btn:hover {
+            background: #c0392b;
+        }
+        
+        .cart-summary h2 {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+        
+        .summary-total {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin: 1.5rem 0;
+            padding-top: 1rem;
+            border-top: 1px solid #ddd;
+        }
+        
+        .checkout-btn {
+            width: 100%;
+            background: #2ecc71;
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 4px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .checkout-btn:hover {
+            background: #27ae60;
+        }
+        
+        .empty-cart {
+            text-align: center;
+            padding: 3rem 0;
+        }
+        
+        .empty-cart p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .continue-shopping {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        
+        .continue-shopping:hover {
+            background: #2980b9;
+        }
+        
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-top: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+                flex-direction: column;
+            }
+            
+            nav ul li {
+                margin: 0.5rem 0;
+            }
+            
+            .dropdown-content {
+                position: static;
+                display: none;
+                width: 100%;
+            }
+            
+            .cart-container {
+                flex-direction: column;
+            }
+            
+            .cart-summary {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">Интернет-магазин</a></div>
+                <nav>
+                    <ul>
+                        <li><a href="{% url 'main_view' %}">Главная</a></li>
+                        
+                        <li class="dropdown">
+                            <a href="{% url 'about_view' %}">О компании</a>
+                            <div class="dropdown-content">
+                                <a href="{% url 'contact_view'%}">Контакты</a>
+                                <a href="{% url 'about_view' %}">O нас</a>
+                            </div>
+                        </li>
+                        
+                        <li class="dropdown">
+                            <a href="{% url 'products_view' %}">Товары</a>
+                            <div class="dropdown-content">
+                                <a href="{% url 'categories_view' %}">Категории</a>
+                                <a href="{% url 'products_view' %}">Все товары</a>
+                            </div>
+                        </li>
+                        
+                        <li>
+                            <a href="{% url 'cart_view' %}" class="cart-icon">
+                                Корзина
+                                <span class="cart-count">0</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    
+    <main>
+        <div class="container">
+            <section class="hero">
+                <h1>Ваша корзина</h1>
+                <p>Товары, которые вы выбрали</p>
+            </section>
+        
+                <div class="empty-cart">
+                    <h2>Ваша корзина пуста</h2>
+                    <p>В вашей корзине пока нет товаров. Перейдите в каталог, чтобы добавить товары.</p>
+                    <a href="products/all.html" class="continue-shopping">Продолжить покупки</a>
+                </div>
+                
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2077 Интернет-магазин. Все права защищены.</p>
+        </div>  
+    </footer>
+</body>
+</html>

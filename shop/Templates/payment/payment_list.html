@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+
+{% block content %}
+<link rel="stylesheet" href={% static 'css/bootstrap.css' %} />
+<div class="container mt-4">
+    <h1 class="mb-4">Платежи</h1>
+
+    <a href="{% url 'payment_create' %}" class="btn btn-success mb-4">
+        <i class="fas fa-plus"></i> Добавить платеж
+    </a>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Аренда</th>
+                    <th>Сумма</th>
+                    <th>Дата платежа</th>
+                    <th>Способ оплаты</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for payment in payments %}
+                <tr>
+                    <td>{{ payment.rental.id }}</td>
+                    <td>{{ payment.amount|floatformat:"2" }} ₽</td>
+                    <td>{{ payment.payment_date }}</td>
+                    <td>{{ payment.get_payment_method_display }}</td>
+                    <td>
+                        <a href="{% url 'payment_update' payment.pk %}" class="btn btn-sm btn-warning" title="Редактировать">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a href="{% url 'payment_delete' payment.pk %}" class="btn btn-sm btn-danger" title="Удалить">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center">Нет платежей</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
